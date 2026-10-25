@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lab Kalor — IPA Kelas VII</title>
+<style>
+:root{--navy:#12304a;--blue:#176b87;--teal:#21a6a1;--coral:#ef795e;--gold:#f5b544;--bg:#f2f7fa;--line:#dce7ed;--muted:#647989}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#183247;font:15px/1.5 "Segoe UI",Arial,sans-serif}
+header{padding:25px 20px;color:white;background:linear-gradient(120deg,#12304a,#176b87 65%,#21a6a1)}
+.wrap{max-width:1150px;margin:auto}.eyebrow{text-transform:uppercase;letter-spacing:1.4px;font-size:11px;font-weight:800;opacity:.85}
+h1{font-size:clamp(28px,4vw,40px);margin:4px 0}header p{margin:5px 0 0;color:#e5f7fa}
+main{max-width:1150px;margin:20px auto;padding:0 14px 30px}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+button{font:inherit;cursor:pointer}.tab,.btn{border:1px solid var(--line);border-radius:11px;padding:10px 14px;font-weight:800;background:white;color:var(--navy)}
+.tab{transition:background .2s,color .2s,border-color .2s}
+.tab[data-mode="mass"]{border-color:#1685d1;color:#12639a;background:#eaf6ff}
+.tab[data-mode="mass"].active{background:#1685d1;color:#fff;border-color:#1685d1}
+.tab[data-mode="energy"]{border-color:#e58a16;color:#9a5200;background:#fff4df}
+.tab[data-mode="energy"].active{background:#e58a16;color:#fff;border-color:#e58a16}
+.tab[data-mode="material"]{border-color:#21966a;color:#126b49;background:#e7f8ef}
+.tab[data-mode="material"].active{background:#21966a;color:#fff;border-color:#21966a}.btn.primary{background:var(--teal);border-color:var(--teal);color:white}.btn:disabled{opacity:.5;cursor:not-allowed}
+.layout{display:grid;grid-template-columns:1.08fr .92fr;gap:16px;align-items:start}.card{background:white;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 10px 25px #12304a0d}
+.head{padding:17px 19px;border-bottom:1px solid var(--line)}h2{margin:0;color:var(--navy);font-size:19px}.sub{color:var(--muted);font-size:13px;margin:4px 0 0}.body{padding:18px}.label{font-size:11px;letter-spacing:1px;font-weight:900;color:var(--blue);text-transform:uppercase;margin-bottom:8px}
+.samples{display:grid;grid-template-columns:1fr 1fr;gap:10px}.sample{padding:12px;border:1px solid var(--line);border-radius:13px;background:#fbfdfe}.stitle{font-weight:900;font-size:13px;display:flex;justify-content:space-between;gap:6px}.tag{font-size:10px;background:#e8f5f5;color:var(--blue);padding:3px 7px;border-radius:99px;white-space:nowrap}
+.vessel{height:140px;display:flex;align-items:flex-end;justify-content:center;gap:12px;padding-bottom:5px}.beaker{width:112px;height:85px;flex:0 0 112px;border:3px solid #7ba5b5;border-top:0;border-radius:0 0 15px 15px;position:relative;overflow:hidden;background:#f5fbfd;box-shadow:inset 0 0 0 1px #ffffffaa}.water{position:absolute;bottom:0;left:0;right:0;height:45%;background:linear-gradient(#8ce0f3,#36a9d0);transition:height .2s}.water.oil{background:linear-gradient(#ffe08a,#f5b544)}
+.thermo{width:34px;height:116px;flex:0 0 34px;position:relative;align-self:flex-end;margin:0 3px 0 0;background:transparent;border:0;border-radius:0;isolation:isolate}.thermo:before{content:"";position:absolute;left:10px;top:4px;bottom:20px;width:12px;border:3px solid #465475;border-radius:10px 10px 4px 4px;background:linear-gradient(to top,#ef4444 0%,#ef4444 var(--mercury,18%),#b9f0f8 var(--mercury,18%),#b9f0f8 100%);box-shadow:3px 0 0 #d1d5db;transition:background .25s}.thermo:after{content:"";position:absolute;left:3px;bottom:0;width:28px;height:28px;border:3px solid #465475;border-radius:50%;background:radial-gradient(circle at 50% 50%,#f87171 0 56%,#ef4444 58% 100%);box-shadow:3px 2px 0 #d1d5db;z-index:1}.flames{height:72px;width:min(300px,96%);margin:0 auto 5px;position:relative;display:flex;align-items:flex-end;justify-content:center;gap:3px;padding:0 5px;overflow:visible}.flame{display:inline-block;height:48px;width:23px;flex:0 0 23px;position:relative;background:linear-gradient(155deg,#ff7840 0%,var(--flame-orange,#ff5b32) 42%,var(--flame-red,#e62d20) 100%);clip-path:polygon(50% 0%,63% 15%,62% 30%,79% 43%,87% 59%,83% 77%,70% 91%,50% 100%,29% 92%,15% 77%,10% 61%,17% 46%,29% 35%,35% 21%);transform-origin:50% 100%;animation:flicker .55s infinite alternate;filter:drop-shadow(0 0 var(--flame-glow,5px) var(--flame-red,#ff5a24));transition:height .25s,filter .25s,background .25s}.flame:before{content:"";position:absolute;left:24%;right:24%;top:34%;bottom:0;background:var(--flame-yellow,#ffc43d);clip-path:polygon(50% 0%,67% 18%,75% 38%,91% 60%,80% 82%,50% 100%,22% 88%,8% 67%,27% 46%,35% 26%);border-radius:50% 50% 35% 35%;}.flame:nth-child(even){height:34px;animation-delay:.2s}.flame:nth-child(3n){height:42px;animation-delay:.1s}
+.flames{height:29px;display:flex;justify-content:center;gap:6px}.flame{height:20px;width:13px;background:linear-gradient(#ffd66d,var(--coral));border-radius:80% 20% 65% 45%;transform:rotate(45deg);animation:flicker .65s infinite alternate}@keyframes flicker{to{transform:rotate(35deg) scale(.85);opacity:.7}}
+.small{font-size:11px;color:var(--muted)}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}.metric{background:#f3f8fa;border:1px solid #e4edf1;padding:10px;border-radius:11px}.metric span{font-size:11px;color:var(--muted);display:block}.metric strong{font-size:20px;color:var(--navy)}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:10px}.control{border:1px solid var(--line);padding:10px;border-radius:11px}.control label{font-size:12px;font-weight:800;display:flex;justify-content:space-between;gap:5px;margin-bottom:6px}.control output{color:var(--blue)}input[type=range]{width:100%;accent-color:var(--teal)}select,textarea{width:100%;border:1px solid var(--line);border-radius:9px;padding:9px;font:inherit}textarea{min-height:70px;font-size:13px;resize:vertical}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.notice{background:#fff8e8;border:1px solid #f5dfad;color:#795a1a;border-radius:11px;padding:10px 12px;font-size:12px;margin-top:12px}
+canvas{width:100%;height:230px;display:block}.legend{font-size:12px;color:var(--muted);display:flex;gap:14px}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px}.result{background:#e7f7f3;border:1px solid #c8e9e2;border-radius:12px;padding:12px;margin:13px 0}.result h3{margin:0 0 4px;font-size:14px;color:#176b65}.result p{font-size:13px;margin:0}
+.question{border:1px solid var(--line);border-radius:12px;padding:12px;margin:10px 0}.question strong{font-size:13px}.question p{font-size:12px;color:var(--muted);margin:4px 0 8px}
+table{width:100%;border-collapse:collapse;font-size:12px}td,th{text-align:left;padding:8px;border-bottom:1px solid var(--line)}th{background:#f1f7f9;color:var(--navy)}.scroll{overflow-x:auto}
+.hidden{display:none!important}footer{max-width:1150px;margin:auto;padding:0 15px 25px;font-size:11px;color:var(--muted)}
+@media(max-width:780px){.layout{grid-template-columns:1fr}.body{padding:14px}}@media(max-width:430px){.controls{grid-template-columns:1fr}.samples{gap:7px}.sample{padding:8px}.metrics{gap:5px}.metric{padding:7px}.metric strong{font-size:17px}}
+@media print{body{background:white}.tabs,.actions{display:none}.layout{grid-template-columns:1fr 1fr}.card{box-shadow:none}}
+
+/* Warna khas tiap eksperimen */
+.layout:has(.tab[data-mode="mass"].active) .card:first-child .head h2{color:#1269a3}
+.layout:has(.tab[data-mode="energy"].active) .card:first-child .head h2{color:#a95b00}
+.layout:has(.tab[data-mode="material"].active) .card:first-child .head h2{color:#14784f}
+.layout:has(.tab[data-mode="mass"].active) .card:first-child{border-top:4px solid #1685d1}
+.layout:has(.tab[data-mode="energy"].active) .card:first-child{border-top:4px solid #e58a16}
+.layout:has(.tab[data-mode="material"].active) .card:first-child{border-top:4px solid #21966a}
+
+
+/* Lembar kerja inkuiri terbimbing dan identitas kelompok */
+.identity-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+.identity-grid label{display:block;font-size:12px;font-weight:800;color:var(--navy)}
+.text-input{width:100%;min-width:0;border:1px solid var(--line);border-radius:8px;padding:9px;font:inherit;background:#fff;color:#183247;margin-top:5px}
+.members-table .text-input{margin:0}
+.active-check{display:flex;align-items:center;gap:6px;font-weight:700;font-size:12px;white-space:nowrap}
+.active-check input{width:17px;height:17px;accent-color:#21966a}
+.group-sheet{border-top:3px solid #176b87}
+@media(max-width:430px){.identity-grid{grid-template-columns:1fr}.identity-grid label[style*="grid-column"]{grid-column:auto!important}}
+@media print{.text-input{border:1px solid #999}.active-check input{print-color-adjust:exact}}
+
+
+/* Galeri kolaboratif */
+.collab-panel{margin-top:22px;padding:20px;border:1px solid #cfe0e8;border-radius:18px;background:#fff;box-shadow:0 8px 24px #12304a0b}
+.collab-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}.collab-head h2{margin:3px 0 4px;font-size:clamp(20px,3vw,27px);color:var(--navy)}.collab-head p{margin:0;color:var(--muted);max-width:780px}.cloud-mark{font-size:34px;color:#176b87;background:#eaf6ff;border-radius:12px;padding:6px 13px}
+.collab-grid,.gallery-tools{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:15px}.collab-grid label,.gallery-tools label{font-size:12px;font-weight:800;color:var(--navy)}
+.collab-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}.cloud-status{margin-top:12px;padding:10px 12px;border-radius:9px;background:#f3f7f9;color:#526a79;font-size:13px}.cloud-status.ok{background:#e8f7ef;color:#176a43}.cloud-status.err{background:#fff0ed;color:#a83b2b}
+.report-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:12px;margin-top:14px}.report-card{border:1px solid var(--line);border-radius:12px;padding:14px;background:#fbfdfe;min-width:0}.report-card h3{margin:0 0 3px;color:var(--navy);font-size:17px}.report-card .meta{font-size:11px;color:var(--muted);margin-bottom:8px}.report-card p{margin:6px 0;overflow-wrap:anywhere}.report-card .report-excerpt{font-size:13px}.report-card details{margin-top:8px;border-top:1px solid var(--line);padding-top:8px}.report-card summary{cursor:pointer;font-weight:800;color:#176b87}.report-card .report-body{font-size:13px;white-space:pre-wrap;overflow-wrap:anywhere}.small{font-size:12px;color:var(--muted)}
+@media(max-width:600px){.collab-grid,.gallery-tools{grid-template-columns:1fr}.collab-panel{padding:14px}.collab-head{gap:8px}.cloud-mark{font-size:26px;padding:3px 9px}}
+
+</style>
+</head>
+<body>
+<header><div class="wrap"><div class="eyebrow">Laboratorium virtual · IPA kelas VII</div><h1>♨ Lab Kalor</h1><p>Simulasi pengaruh massa, besar kalor, dan jenis zat terhadap perubahan suhu.</p></div></header>
+<main>
+<div class="tabs"><button class="tab active" data-mode="mass">01 · Massa air</button><button class="tab" data-mode="energy">02 · Besar kalor</button><button class="tab" data-mode="material">03 · Jenis zat</button></div>
+<div class="layout">
+<section class="card"><div class="head"><h2 id="title">Eksperimen 1 · Massa air</h2><p class="sub" id="subtitle">Apa pengaruh massa air terhadap kenaikan suhu?</p></div><div class="body">
+<div class="label">Visualisasi pemanasan</div><div class="samples">
+<div class="sample"><div class="stitle"><span>Wadah A</span><span class="tag" id="tagA">100 g air</span></div><div class="vessel"><div class="beaker"><div class="water" id="waterA"></div></div><div class="thermo"></div></div><div class="flames" id="flameA"><i class="flame"></i></div><div class="small" id="tempA">Suhu: 25.0 °C</div></div>
+<div class="sample"><div class="stitle"><span>Wadah B</span><span class="tag" id="tagB">200 g air</span></div><div class="vessel"><div class="beaker"><div class="water" id="waterB"></div></div><div class="thermo"></div></div><div class="flames" id="flameB"><i class="flame"></i></div><div class="small" id="tempB">Suhu: 25.0 °C</div></div></div>
+<div class="metrics"><div class="metric"><span>Waktu simulasi</span><strong id="time">0 s</strong></div><div class="metric"><span>ΔT wadah A</span><strong id="deltaA">0.0 °C</strong></div><div class="metric"><span>ΔT wadah B</span><strong id="deltaB">0.0 °C</strong></div></div>
+<div class="label">Pengaturan percobaan</div><div class="controls">
+<div class="control" id="massAC"><label for="massA">Massa A <output id="massAO">100 g</output></label><input id="massA" type="range" min="50" max="300" step="50" value="100"></div>
+<div class="control" id="massBC"><label for="massB">Massa B <output id="massBO">200 g</output></label><input id="massB" type="range" min="50" max="300" step="50" value="200"></div>
+<div class="control" id="powerAC"><label for="powerA">Daya efektif A <output id="powerAO">20 W</output></label><input id="powerA" type="range" min="10" max="60" step="5" value="20"></div>
+<div class="control" id="powerBC"><label for="powerB">Daya efektif B <output id="powerBO">20 W</output></label><input id="powerB" type="range" min="10" max="60" step="5" value="20"></div>
+<div class="control hidden" id="materialAC"><label for="materialA">Zat A</label><select id="materialA"><option value="water">Air</option><option value="oil">Minyak goreng</option></select></div>
+<div class="control hidden" id="materialBC"><label for="materialB">Zat B</label><select id="materialB"><option value="oil">Minyak goreng</option><option value="water">Air</option></select></div>
+<div class="control"><label for="duration">Lama pemanasan <output id="durationO">120 s</output></label><input id="duration" type="range" min="30" max="240" step="30" value="120"></div>
+<div class="control"><label for="start">Suhu awal <output id="startO">25 °C</output></label><input id="start" type="range" min="15" max="40" step="5" value="25"></div></div>
+<div class="actions"><button class="btn primary" id="run">▶ Jalankan simulasi</button><button class="btn" id="step">＋ Langkah 30 detik</button><button class="btn" id="reset">↺ Atur ulang</button></div>
+<div class="notice" id="note">Model ideal: kalor efektif dihitung dari daya × waktu. Kehilangan kalor ke lingkungan tidak dimodelkan.</div><div class="result" id="energyExplain"><h3>Energi listrik menjadi kalor</h3><p id="energyText">Daya 20 watt selama 120 sekon menghasilkan energi listrik 2.400 joule (E = P × t). Dalam model ideal, energi ini dianggap berpindah menjadi kalor pada zat.</p></div>
+</div></section>
+<section class="card"><div class="head"><h2>Hasil dan penyelidikan</h2><p class="sub">Amati pola, catat bukti, lalu simpulkan.</p></div><div class="body">
+<div class="label">Grafik perubahan suhu</div><canvas id="chart" width="600" height="300"></canvas><div class="legend"><span><i class="dot" style="background:#176b87"></i>Wadah A</span><span><i class="dot" style="background:#ef795e"></i>Wadah B</span></div>
+<div class="result"><h3 id="resultTitle">Prediksi model</h3><p id="resultText">Jalankan simulasi untuk membandingkan perubahan suhu.</p></div>
+<div class="label" style="margin-top:18px">Lembar Kerja Murid · Inkuiri Terbimbing</div>
+<div class="question group-sheet">
+  <strong>Identitas kelompok</strong>
+  <div class="identity-grid">
+    <label>Nama kelompok<input id="groupName" class="text-input" type="text" placeholder="Contoh: Kelompok 1"></label>
+    <label>Kelas<input id="groupClass" class="text-input" type="text" placeholder="Contoh: VII A"></label>
+    <label>Tanggal<input id="workDate" class="text-input" type="date"></label>
+    <label>Percobaan<select id="workExperiment" class="text-input"><option value="mass">Eksperimen 1 · Massa air</option><option value="energy">Eksperimen 2 · Besar kalor</option><option value="material">Eksperimen 3 · Jenis zat</option></select></label>
+  </div>
+  <p class="small">Tuliskan nama setiap anggota, lalu centang “Aktif” jika anggota terlibat dalam kegiatan kelompok. Hapus centang jika tidak aktif/tidak terlibat.</p>
+  <div class="scroll"><table class="members-table"><thead><tr><th>No.</th><th>Nama anggota</th><th>Status keaktifan</th></tr></thead><tbody>
+  <tr><td>1</td><td><input class="text-input member-name" type="text" placeholder="Nama anggota 1"></td><td><label class="active-check"><input type="checkbox" class="member-active" checked> Aktif</label></td></tr>
+  <tr><td>2</td><td><input class="text-input member-name" type="text" placeholder="Nama anggota 2"></td><td><label class="active-check"><input type="checkbox" class="member-active" checked> Aktif</label></td></tr>
+  <tr><td>3</td><td><input class="text-input member-name" type="text" placeholder="Nama anggota 3"></td><td><label class="active-check"><input type="checkbox" class="member-active" checked> Aktif</label></td></tr>
+  <tr><td>4</td><td><input class="text-input member-name" type="text" placeholder="Nama anggota 4"></td><td><label class="active-check"><input type="checkbox" class="member-active" checked> Aktif</label></td></tr>
+  <tr><td>5</td><td><input class="text-input member-name" type="text" placeholder="Nama anggota 5"></td><td><label class="active-check"><input type="checkbox" class="member-active" checked> Aktif</label></td></tr>
+  <tr><td>6</td><td><input class="text-input member-name" type="text" placeholder="Nama anggota 6"></td><td><label class="active-check"><input type="checkbox" class="member-active" checked> Aktif</label></td></tr>
+  </tbody></table></div>
+</div>
+<div class="question"><strong>Tahap 1 · Orientasi dan mengamati masalah</strong><p>Amati simulasi, wadah, pengaturan percobaan, dan pertanyaan penyelidikan. Apa yang kamu amati? Hal apa yang membuatmu penasaran?</p><textarea id="observation" placeholder="Hasil pengamatan awal kelompok..."></textarea></div>
+<div class="question"><strong>Tahap 2 · Merumuskan masalah</strong><p>Susun satu pertanyaan yang dapat dijawab melalui simulasi. Contoh: “Bagaimana pengaruh massa air terhadap kenaikan suhu jika daya pemanasan sama?”</p><textarea id="problem" placeholder="Pertanyaan penyelidikan kelompok..."></textarea></div>
+<div class="question"><strong>Tahap 3 · Merumuskan hipotesis</strong><p>Tuliskan dugaan sementara beserta alasan ilmiahnya.</p><textarea id="hypothesis" placeholder="Kami menduga bahwa ... karena ..."></textarea></div>
+<div class="question"><strong>Tahap 4 · Merencanakan dan melakukan penyelidikan</strong><p>Catat variabel yang diubah, variabel yang diamati, dan variabel yang dijaga tetap. Kemudian jalankan simulasi dan catat hasilnya.</p>
+  <div class="identity-grid">
+    <label>Variabel yang diubah<input id="varChanged" class="text-input" type="text" placeholder="Contoh: massa air"></label>
+    <label>Variabel yang diamati<input id="varObserved" class="text-input" type="text" placeholder="Contoh: perubahan suhu"></label>
+    <label style="grid-column:1/-1">Variabel yang dijaga tetap<input id="varControlled" class="text-input" type="text" placeholder="Contoh: daya pemanasan dan suhu awal"></label>
+  </div>
+  <p style="margin-top:12px">Data hasil simulasi:</p><div class="scroll"><table><thead><tr><th>Data</th><th>Wadah A</th><th>Wadah B</th></tr></thead><tbody><tr><td>Massa (g)</td><td id="tmA">100</td><td id="tmB">200</td></tr><tr><td>Zat</td><td id="matLabelA">Air</td><td id="matLabelB">Air</td></tr><tr><td>Daya (W)</td><td id="tpA">20</td><td id="tpB">20</td></tr><tr><td>Energi model (J)</td><td id="teA">0</td><td id="teB">0</td></tr><tr><td>Suhu akhir (°C)</td><td id="ttA">25</td><td id="ttB">25</td></tr><tr><td>Perubahan suhu (°C)</td><td id="tdA">0</td><td id="tdB">0</td></tr></tbody></table></div>
+</div>
+<div class="question"><strong>Tahap 5 · Menganalisis dan menguji hipotesis</strong><p>Bandingkan hasil wadah A dan B. Apakah data mendukung hipotesis kelompok? Jelaskan bukti yang mendukung atau tidak mendukung dugaan kalian.</p><textarea id="analysisAnswer" placeholder="Data menunjukkan bahwa ... sehingga hipotesis kami ..."></textarea></div>
+<div class="question"><strong>Tahap 6 · Merumuskan kesimpulan</strong><p>Tulis kesimpulan yang menjawab pertanyaan penyelidikan dan menggunakan data sebagai bukti.</p><textarea id="conclusion" placeholder="Berdasarkan hasil simulasi, kami menyimpulkan bahwa ..."></textarea></div>
+<div class="question"><strong>Tahap 7 · Mengomunikasikan hasil dan refleksi</strong><p>Siapkan presentasi singkat: pertanyaan, hipotesis, data utama, kesimpulan. Apa yang sudah dilakukan kelompok dengan baik dan apa yang perlu diperbaiki?</p><textarea id="reflection" placeholder="Refleksi dan pembagian peran kelompok..."></textarea></div>
+
+<section class="collab-panel" id="collabPanel">
+  <div class="collab-head">
+    <div><div class="eyebrow">Kolaborasi kelas</div><h2>Galeri hasil kerja kelompok</h2>
+    <p>Simpan laporan ke ruang bersama. Semua kelompok dapat membaca laporan; perubahan hanya dapat dilakukan menggunakan kode akses kelompok yang sama.</p></div>
+    <span class="cloud-mark">☁</span>
+  </div>
+  <div class="collab-grid">
+    <label>Nama kelompok untuk penyimpanan<input id="cloudGroupName" class="text-input" type="text" placeholder="Contoh: Kelompok 1"></label>
+    <label>Kode akses kelompok<input id="cloudGroupCode" class="text-input" type="password" autocomplete="new-password" placeholder="Buat kode rahasia kelompok"></label>
+  </div>
+  <p class="small">Simpan kode akses kelompok dengan baik. Kelompok lain dapat membaca laporan, tetapi tidak dapat mengubahnya tanpa kode tersebut.</p>
+  <div class="collab-actions">
+    <button class="btn primary" id="saveCloud">☁ Simpan / Perbarui laporan</button>
+    <button class="btn" id="refreshCloud">↻ Muat galeri</button>
+  </div>
+  <div id="cloudStatus" class="cloud-status" role="status">Penyimpanan bersama belum dikonfigurasi. Masukkan URL Web App Apps Script pada konfigurasi HTML setelah deployment.</div>
+  <div class="gallery-tools">
+    <label class="gallery-search">Cari kelompok atau kesimpulan<input id="gallerySearch" class="text-input" type="search" placeholder="Ketik kata kunci..."></label>
+    <label>Filter percobaan<select id="galleryFilter" class="text-input"><option value="">Semua percobaan</option><option value="mass">Massa air</option><option value="energy">Besar kalor</option><option value="material">Jenis zat</option></select></label>
+  </div>
+  <div id="reportGallery" class="report-gallery"><p class="small">Galeri belum dimuat.</p></div>
+</section>
+
+<div class="actions"><button class="btn primary" id="csv">↓ Unduh laporan CSV</button><button class="btn" id="print">Cetak lembar kerja</button></div>
+</div></section></div>
+<section class="card" style="margin-top:16px"><div class="head"><h2>Petunjuk penyelidikan</h2><p class="sub">Ikuti alur Guided Inquiry.</p></div><div class="body"><div class="samples">
+<div class="sample"><div class="label">01 · Prediksi</div><b>Tuliskan hipotesis</b><p class="small">Ubah satu variabel utama; jaga variabel lain tetap.</p></div>
+<div class="sample"><div class="label">02 · Uji</div><b>Jalankan simulasi</b><p class="small">Gunakan langkah 30 detik atau jalankan sampai waktu yang dipilih.</p></div>
+<div class="sample"><div class="label">03 · Analisis</div><b>Bandingkan data</b><p class="small">Perhatikan energi model, suhu akhir, dan perubahan suhu.</p></div>
+<div class="sample"><div class="label">04 · Simpulkan</div><b>Gunakan bukti</b><p class="small">Kesimpulan harus sesuai dengan data, bukan hanya dugaan awal.</p></div>
+</div><div class="notice">Model pembelajaran: kalor jenis air = 4,18 J/g°C dan minyak = 2,0 J/g°C (nilai pendekatan). Pada eksperimen 1, tinggi cairan menggambarkan massa zat yang ditambahkan. Termometer mengikuti suhu hasil model. Kehilangan kalor diabaikan; model tidak menghitung perubahan fase dan tidak ditujukan untuk prediksi nyata secara presisi.</div></div></section>
+</main><footer>Lab Kalor · Media belajar IPA kelas VII · Berjalan lokal di browser tanpa koneksi internet.</footer>
+<script>
+/* Konfigurasi JSON untuk skenario simulasi */
+const CONFIG={
+ "initialTemperatureC":25,"durationSeconds":120,"timeStepSeconds":30,
+ "specificHeatJPerGramC":{"water":4.18,"oil":2.0},
+ "experiments":{
+  "mass":{"title":"Eksperimen 1 · Massa air","subtitle":"Apa pengaruh massa air terhadap kenaikan suhu?","massA":100,"massB":200,"powerA":20,"powerB":20,"materialA":"water","materialB":"water"},
+  "energy":{"title":"Eksperimen 2 · Besar kalor","subtitle":"Apa pengaruh besar kalor terhadap kenaikan suhu?","massA":150,"massB":150,"powerA":15,"powerB":30,"materialA":"water","materialB":"water"},
+  "material":{"title":"Eksperimen 3 · Jenis zat","subtitle":"Apakah jenis zat memengaruhi kenaikan suhu?","massA":100,"massB":100,"powerA":20,"powerB":20,"materialA":"water","materialB":"oil"}
+ }};
+const $=id=>document.getElementById(id);let mode="mass",elapsed=0,timer=null,running=false;
+function s(){return {mA:+$("massA").value,mB:+$("massB").value,pA:+$("powerA").value,pB:+$("powerB").value,d:+$("duration").value,t0:+$("start").value,matA:$("materialA").value,matB:$("materialB").value}}
+function c(mat){return CONFIG.specificHeatJPerGramC[mat]||4.18}function temp(m,p,mat,t,t0){return t0+(p*t)/(m*c(mat))}
+function stop(){running=false;if(timer){clearInterval(timer);timer=null}}
+function labels(){let x=s();$("massAO").textContent=x.mA+" g";$("massBO").textContent=x.mB+" g";$("powerAO").textContent=x.pA+" W";$("powerBO").textContent=x.pB+" W";$("durationO").textContent=x.d+" s";$("startO").textContent=x.t0+" °C";$("tagA").textContent=x.mA+" g "+(x.matA==="water"?"air":"minyak");$("tagB").textContent=x.mB+" g "+(x.matB==="water"?"air":"minyak");$("waterA").classList.toggle("oil",x.matA==="oil");$("waterB").classList.toggle("oil",x.matB==="oil");$("waterA").style.height=liquidHeight(x.mA)+"%";$("waterB").style.height=liquidHeight(x.mB)+"%";updateFlames()}
+
+function renderFlame(id,count,power){
+  const box=$(id); box.innerHTML="";
+  const n=Math.max(1,Math.min(15,count));
+  const intensity=Math.max(0,Math.min(1,(power-10)/90));
+  box.style.setProperty("--flame-yellow", intensity>.75 ? "#ffb52e" : "#ffc43d");
+  box.style.setProperty("--flame-orange", intensity>.75 ? "#ff321e" : (intensity>.35 ? "#ff542b" : "#ff7040"));
+  box.style.setProperty("--flame-red", intensity>.75 ? "#b90016" : (intensity>.35 ? "#e9231c" : "#ff5a32"));
+  box.style.setProperty("--flame-glow", (5+intensity*12)+"px");
+  // Susun titik api dari tengah ke luar, simetris ke kiri dan kanan.
+  for(let i=0;i<n;i++){
+    const f=document.createElement("i"); f.className="flame";
+    f.style.height=(26+intensity*12+(i%3)*4)+"px";
+    if(i===0){f.style.width="15px";f.style.flexBasis="15px";box.appendChild(f);}
+    else if(i%2===1){box.insertBefore(f,box.firstChild);}
+    else{box.appendChild(f);}
+  }
+}
+function updateFlames(){
+  const x=s();
+  // Eksperimen 2: jumlah titik api ditentukan oleh daya yang dipilih.
+  // Saat simulasi berjalan, titik api tetap; perubahan waktu hanya memengaruhi suhu/termometer.
+  if(mode==="energy"){
+    const countA=Math.max(1,Math.min(15,1+Math.floor((x.pA-10)/10)));
+    const countB=Math.max(1,Math.min(15,1+Math.floor((x.pB-10)/10)));
+    renderFlame("flameA",countA,x.pA);
+    renderFlame("flameB",countB,x.pB);
+  }else{
+    renderFlame("flameA",1,x.pA);renderFlame("flameB",1,x.pB);
+  }
+}
+function liquidHeight(mass){
+  // Ilustrasi tinggi cairan berbanding lurus dengan massa dalam wadah.
+  return Math.max(12,Math.min(88,(mass/300)*82+5));
+}
+function thermometerLevel(tempC){
+  // Kolom merah bergerak naik-turun dari bulb; rentang visual 15–100 °C.
+  return Math.max(4,Math.min(92,((tempC-15)/85)*88+4));
+}
+
+function modeSet(m){stop();mode=m;if($("workExperiment"))$("workExperiment").value=m;document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.mode===m));let e=CONFIG.experiments[m];$("title").textContent=e.title;$("subtitle").textContent=e.subtitle;$("massA").value=e.massA;$("massB").value=e.massB;$("powerA").value=e.powerA;$("powerB").value=e.powerB;$("materialA").value=e.materialA;$("materialB").value=e.materialB;
+$("massAC").classList.toggle("hidden",m!=="mass");$("massBC").classList.toggle("hidden",m!=="mass");$("powerAC").classList.toggle("hidden",m==="material");$("powerBC").classList.toggle("hidden",m==="material");$("materialAC").classList.toggle("hidden",m!=="material");$("materialBC").classList.toggle("hidden",m!=="material");
+updateFlames();
+$("note").textContent=m==="mass"?"Model: kedua wadah menerima daya efektif sama; massa berbeda. Tinggi cairan bertambah saat massa yang dipilih bertambah.":m==="energy"?"Model: massa air sama; daya dipilih pengguna dan jumlah titik api mengikuti tingkat daya.":"Model: massa dan energi sama. Massa jenis berbeda memengaruhi volume zat untuk massa yang sama, sedangkan perbedaan kenaikan suhu pada kondisi ini terutama ditentukan oleh kalor jenis masing-masing zat. Makna kalor jenis: air 4,18 J/g°C berarti 1 gram air memerlukan energi kalor 4,18 joule untuk naik suhu 1°C; minyak 2,0 J/g°C berarti 1 gram minyak memerlukan sekitar 2,0 joule untuk naik suhu 1°C. Ini berlaku selama tidak terjadi perubahan wujud dan kalor tidak hilang ke lingkungan.";labels();reset()}
+function update(){
+ let x=s();
+ const rawA=temp(x.mA,x.pA,x.matA,elapsed,x.t0),rawB=temp(x.mB,x.pB,x.matB,elapsed,x.t0);
+ // Tampilan dibatasi agar tetap pada rentang cairan yang dimodelkan; kalor laten tidak dihitung.
+ const a=x.matA==="water"?Math.min(100,rawA):rawA;
+ const b=x.matB==="water"?Math.min(100,rawB):rawB;
+ $("tempA").textContent="Suhu: "+a.toFixed(1)+" °C";$("tempB").textContent="Suhu: "+b.toFixed(1)+" °C";
+ $("waterA").style.height=liquidHeight(x.mA)+"%";$("waterB").style.height=liquidHeight(x.mB)+"%";
+ const thermoA=$("tempA").parentElement.querySelector(".thermo"),thermoB=$("tempB").parentElement.querySelector(".thermo");
+ if(thermoA)thermoA.style.setProperty("--mercury",thermometerLevel(a)+"%");
+ if(thermoB)thermoB.style.setProperty("--mercury",thermometerLevel(b)+"%");
+ $("time").textContent=elapsed+" s";$("deltaA").textContent="+"+(a-x.t0).toFixed(1)+" °C";$("deltaB").textContent="+"+(b-x.t0).toFixed(1)+" °C";
+ const qA=x.pA*elapsed,qB=x.pB*elapsed;
+ $("tmA").textContent=x.mA;$("tmB").textContent=x.mB;$("matLabelA").textContent=x.matA==="water"?"Air":"Minyak goreng";$("matLabelB").textContent=x.matB==="water"?"Air":"Minyak goreng";$("tpA").textContent=x.pA;$("tpB").textContent=x.pB;$("teA").textContent=Math.round(qA);$("teB").textContent=Math.round(qB);$("ttA").textContent=a.toFixed(1);$("ttB").textContent=b.toFixed(1);$("tdA").textContent=(a-x.t0).toFixed(1);$("tdB").textContent=(b-x.t0).toFixed(1);
+ $("energyText").textContent=mode==="energy"
+  ? `Wadah A: daya ${x.pA} watt × ${elapsed} sekon = ${qA.toLocaleString("id-ID")} joule. Wadah B: daya ${x.pB} watt × ${elapsed} sekon = ${qB.toLocaleString("id-ID")} joule. Karena 1 watt = 1 joule/sekon, energi listrik E = P × t. Dalam model ideal, energi ini dianggap menjadi kalor.`
+  : `Daya ${x.pA} watt selama ${elapsed} sekon menghasilkan energi listrik ${qA.toLocaleString("id-ID")} joule (E = P × t). Wadah B menerima ${qB.toLocaleString("id-ID")} joule. Dalam model ideal, energi listrik dianggap berpindah menjadi kalor.`;
+ $("resultTitle").textContent=elapsed===0?"Prediksi model":elapsed>=x.d?"Simulasi selesai":"Hasil sementara";
+ let msg=elapsed===0?"Jalankan simulasi untuk melihat perubahan suhu dan membandingkan kedua wadah.":mode==="mass"?`Energi model sama (${qA} J). Massa yang lebih kecil diprediksi mengalami kenaikan suhu lebih besar. Tinggi cairan pada gambar mengikuti massa yang dipilih.`:mode==="energy"?`Massa sama. Energi model A ${qA} J dan B ${qB} J. Daya lebih besar ditampilkan dengan lebih banyak titik api; bandingkan perubahan suhunya.`:`Energi model sama (${qA} J) dan massa kedua zat sama. Massa jenis yang berbeda membuat volume air dan minyak berbeda untuk massa yang sama. Namun, pada pemanasan dengan massa dan energi sama, perbedaan kenaikan suhu terutama disebabkan oleh kalor jenis: air 4,18 J/g°C dan minyak 2,0 J/g°C. Artinya, 1 gram air memerlukan 4,18 joule untuk naik 1°C, sedangkan 1 gram minyak memerlukan sekitar 2,0 joule untuk naik 1°C, dengan asumsi tidak ada kalor yang hilang dan tidak terjadi perubahan wujud.`;
+ $("resultText").textContent=msg;updateFlames();draw()
+}
+function draw(){let cv=$("chart"),ctx=cv.getContext("2d"),w=cv.clientWidth||550,h=230,dpr=window.devicePixelRatio||1;cv.width=w*dpr;cv.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);let x=s(),pad={l:40,r:12,t:12,b:28},pw=w-pad.l-pad.r,ph=h-pad.t-pad.b,maxT=x.d,maxTemp=Math.max(x.t0+5,temp(x.mA,x.pA,x.matA,maxT,x.t0),temp(x.mB,x.pB,x.matB,maxT,x.t0))*1.08;ctx.clearRect(0,0,w,h);ctx.font="10px Arial";ctx.strokeStyle="#e1ebef";ctx.fillStyle="#647989";
+for(let i=0;i<=4;i++){let y=pad.t+ph*i/4;ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(w-pad.r,y);ctx.stroke();ctx.fillText((maxTemp-(maxTemp-x.t0)*i/4).toFixed(0),4,y+3);let xx=pad.l+pw*i/4;ctx.beginPath();ctx.moveTo(xx,pad.t);ctx.lineTo(xx,h-pad.b);ctx.stroke();ctx.fillText(Math.round(maxT*i/4)+"s",xx-8,h-8)}
+[{m:x.mA,p:x.pA,mat:x.matA,color:"#176b87"},{m:x.mB,p:x.pB,mat:x.matB,color:"#ef795e"}].forEach(z=>{ctx.beginPath();for(let i=0;i<=40;i++){let t=maxT*i/40,tt=temp(z.m,z.p,z.mat,Math.min(t,elapsed),x.t0),xx=pad.l+pw*t/maxT,yy=pad.t+ph*(maxTemp-tt)/(maxTemp-x.t0);i?ctx.lineTo(xx,yy):ctx.moveTo(xx,yy)}ctx.strokeStyle=z.color;ctx.lineWidth=3;ctx.stroke()});let now=pad.l+pw*elapsed/maxT;ctx.setLineDash([4,4]);ctx.strokeStyle="#8aa1ad";ctx.beginPath();ctx.moveTo(now,pad.t);ctx.lineTo(now,h-pad.b);ctx.stroke();ctx.setLineDash([])}
+function reset(){stop();elapsed=0;$("run").textContent="▶ Jalankan simulasi";$("step").disabled=false;update()}
+function advance(){let x=s();elapsed=Math.min(x.d,elapsed+30);update();if(elapsed>=x.d){stop();$("run").textContent="▶ Jalankan lagi";$("step").disabled=true}}
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>modeSet(b.dataset.mode)));
+["massA","massB","powerA","powerB","duration","start","materialA","materialB"].forEach(id=>$(id).addEventListener("input",()=>{labels();reset()}));
+$("run").addEventListener("click",()=>{if(running){stop();$("run").textContent="▶ Lanjutkan simulasi";return}if(elapsed>=s().d)reset();running=true;$("run").textContent="Ⅱ Jeda";timer=setInterval(()=>{advance();if(elapsed>=s().d)$("run").textContent="▶ Jalankan lagi"},450)});
+$("step").addEventListener("click",()=>{stop();if(elapsed<s().d)advance()});$("reset").addEventListener("click",reset);$("print").addEventListener("click",()=>print());
+$("csv").addEventListener("click",()=>{let x=s(),a=temp(x.mA,x.pA,x.matA,elapsed,x.t0),b=temp(x.mB,x.pB,x.matB,elapsed,x.t0),rows=[["Laporan Lab Kalor"],["Eksperimen",mode],["Hipotesis",$("hypothesis").value],["Waktu simulasi (s)",elapsed],["Data","Wadah A","Wadah B"],["Massa (g)",x.mA,x.mB],["Zat",x.matA,x.matB],["Daya efektif (W)",x.pA,x.pB],["Energi model (J)",x.pA*elapsed,x.pB*elapsed],["Suhu awal (C)",x.t0,x.t0],["Suhu akhir (C)",a.toFixed(2),b.toFixed(2)],["Perubahan suhu (C)",(a-x.t0).toFixed(2),(b-x.t0).toFixed(2)],["Kesimpulan",$("conclusion").value]];rows.push(["Nama kelompok",$("groupName").value],["Kelas",$("groupClass").value],["Tanggal",$("workDate").value],["Pertanyaan penyelidikan",$("problem").value],["Pengamatan awal",$("observation").value],["Variabel diubah",$("varChanged").value],["Variabel diamati",$("varObserved").value],["Variabel dikontrol",$("varControlled").value],["Analisis hipotesis",$("analysisAnswer").value],["Refleksi",$("reflection").value]);
+document.querySelectorAll(".member-name").forEach((el,i)=>{rows.push(["Anggota "+(i+1),el.value,"Status",document.querySelectorAll(".member-active")[i].checked?"Aktif":"Tidak aktif"])});
+let csv=rows.map(r=>r.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(",")).join("\r\n"),blob=new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}),url=URL.createObjectURL(blob),link=document.createElement("a");link.href=url;link.download="laporan-lab-kalor.csv";link.click();URL.revokeObjectURL(url)});
+window.addEventListener("resize",draw);if($("workDate"))$("workDate").value=new Date().toISOString().slice(0,10);$("workExperiment").addEventListener("change",e=>modeSet(e.target.value));modeSet("mass");
+</script>
+<script>
+/* KONFIGURASI: ganti URL di bawah dengan URL Web App Google Apps Script yang berakhiran /exec. */
+const LAB_KALOR_API_URL = "TEMPEL_URL_WEB_APP_APPS_SCRIPT_DI_SINI";
+(function(){
+  const $id = id => document.getElementById(id);
+  const status = (message, type="") => {
+    const el=$id("cloudStatus"); if(!el)return;
+    el.textContent=message; el.className="cloud-status"+(type?" "+type:"");
+  };
+  const experimentName = key => ({mass:"Massa air",energy:"Besar kalor",material:"Jenis zat"}[key]||key);
+  const val = id => ($id(id)?.value || "").trim();
+  const members = () => Array.from(document.querySelectorAll(".member-name")).map((el,i)=>({
+    name:el.value.trim(),
+    active:!!document.querySelectorAll(".member-active")[i]?.checked
+  })).filter(m=>m.name);
+  function reportPayload(){
+    const x=typeof s==="function"?s():{};
+    const elapsedValue=typeof elapsed!=="undefined"?elapsed:0;
+    const tempFn=typeof temp==="function"?temp:null;
+    let finalA="",finalB="",energyA="",energyB="",deltaA="",deltaB="";
+    if(tempFn && x.mA!==undefined){
+      finalA=Number(tempFn(x.mA,x.pA,x.matA,elapsedValue,x.t0)).toFixed(2);
+      finalB=Number(tempFn(x.mB,x.pB,x.matB,elapsedValue,x.t0)).toFixed(2);
+      energyA=Math.round(x.pA*elapsedValue); energyB=Math.round(x.pB*elapsedValue);
+      deltaA=(Number(finalA)-x.t0).toFixed(2); deltaB=(Number(finalB)-x.t0).toFixed(2);
+    }
+    return {
+      groupName:val("cloudGroupName") || val("groupName"),
+      className:val("groupClass"),
+      date:val("workDate") || new Date().toISOString().slice(0,10),
+      experiment:val("workExperiment") || (typeof mode!=="undefined"?mode:"mass"),
+      experimentName:experimentName(val("workExperiment") || (typeof mode!=="undefined"?mode:"mass")),
+      members:members(),
+      observation:val("observation"), problem:val("problem"), hypothesis:val("hypothesis"),
+      varChanged:val("varChanged"), varObserved:val("varObserved"), varControlled:val("varControlled"),
+      analysis:val("analysisAnswer"), conclusion:val("conclusion"), reflection:val("reflection"),
+      simulation:{massA:x.mA??"",massB:x.mB??"",materialA:x.matA??"",materialB:x.matB??"",
+        powerA:x.pA??"",powerB:x.pB??"",elapsedSeconds:elapsedValue,energyA,energyB,
+        startTemp:x.t0??"",finalA,finalB,deltaA,deltaB}
+    };
+  }
+  function apiReady(){
+    return LAB_KALOR_API_URL && LAB_KALOR_API_URL.startsWith("https://script.google.com/macros/s/") && LAB_KALOR_API_URL.endsWith("/exec");
+  }
+  function jsonp(action){
+    return new Promise((resolve,reject)=>{
+      if(!apiReady())return reject(new Error("URL Apps Script belum dikonfigurasi."));
+      const callback="labKalorCb_"+Date.now()+"_"+Math.floor(Math.random()*100000);
+      const script=document.createElement("script");
+      const timer=setTimeout(()=>{cleanup();reject(new Error("Waktu tunggu habis. Periksa deployment Apps Script."));},15000);
+      function cleanup(){clearTimeout(timer);delete window[callback];script.remove();}
+      window[callback]=data=>{cleanup();if(data&&data.ok)resolve(data);else reject(new Error(data?.message||"Permintaan gagal."));};
+      script.onerror=()=>{cleanup();reject(new Error("Tidak dapat menghubungi Apps Script. Periksa URL dan akses deployment."));};
+      script.src=LAB_KALOR_API_URL+"?action="+encodeURIComponent(action)+"&callback="+encodeURIComponent(callback)+"&_="+Date.now();
+      document.body.appendChild(script);
+    });
+  }
+  async function loadGallery(){
+    status("Memuat laporan dari penyimpanan bersama...");
+    try{
+      const result=await jsonp("list");
+      window.labKalorReports=result.reports||[];
+      renderGallery();
+      status("Galeri berhasil dimuat: "+window.labKalorReports.length+" laporan kelompok.","ok");
+    }catch(err){status(err.message,"err");}
+  }
+  function escapeHtml(value){
+    return String(value??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+  }
+  function renderGallery(){
+    const root=$id("reportGallery"); if(!root)return;
+    const reports=window.labKalorReports||[];
+    const q=val("gallerySearch").toLowerCase(), filter=val("galleryFilter");
+    const filtered=reports.filter(r=>{
+      const text=[r.groupName,r.className,r.conclusion,r.hypothesis,r.experimentName].join(" ").toLowerCase();
+      return (!q||text.includes(q))&&(!filter||r.experiment===filter);
+    });
+    if(!filtered.length){root.innerHTML='<p class="small">Belum ada laporan yang sesuai. Setelah kelompok menyimpan hasil, laporan akan tampil di sini.</p>';return;}
+    root.innerHTML=filtered.map(r=>{
+      const memberText=(r.members||[]).map(m=>escapeHtml(m.name)+" ("+(m.active?"Aktif":"Tidak aktif")+")").join(", ")||"Belum diisi";
+      const sim=r.simulation||{};
+      return `<article class="report-card">
+        <h3>${escapeHtml(r.groupName||"Kelompok tanpa nama")}</h3>
+        <div class="meta">${escapeHtml(r.className||"Kelas tidak diisi")} · ${escapeHtml(r.experimentName||experimentName(r.experiment))} · ${escapeHtml(r.date||"")}</div>
+        <p class="report-excerpt"><strong>Kesimpulan:</strong> ${escapeHtml(r.conclusion||"Belum menuliskan kesimpulan.")}</p>
+        <details><summary>Buka laporan lengkap</summary><div class="report-body">
+<strong>Anggota:</strong> ${memberText}
+<strong>Pengamatan:</strong> ${escapeHtml(r.observation||"—")}
+<strong>Pertanyaan penyelidikan:</strong> ${escapeHtml(r.problem||"—")}
+<strong>Hipotesis:</strong> ${escapeHtml(r.hypothesis||"—")}
+<strong>Variabel diubah:</strong> ${escapeHtml(r.varChanged||"—")}
+<strong>Variabel diamati:</strong> ${escapeHtml(r.varObserved||"—")}
+<strong>Variabel dikontrol:</strong> ${escapeHtml(r.varControlled||"—")}
+<strong>Analisis:</strong> ${escapeHtml(r.analysis||"—")}
+<strong>Refleksi:</strong> ${escapeHtml(r.reflection||"—")}
+<strong>Data simulasi:</strong> Massa A/B ${escapeHtml(sim.massA)} / ${escapeHtml(sim.massB)} g; energi A/B ${escapeHtml(sim.energyA)} / ${escapeHtml(sim.energyB)} J; suhu akhir A/B ${escapeHtml(sim.finalA)} / ${escapeHtml(sim.finalB)} °C; perubahan suhu A/B ${escapeHtml(sim.deltaA)} / ${escapeHtml(sim.deltaB)} °C.
+        </div></details>
+      </article>`;
+    }).join("");
+  }
+  async function saveReport(){
+    const groupName=val("cloudGroupName")||val("groupName"), code=val("cloudGroupCode");
+    if(!groupName){status("Isi nama kelompok terlebih dahulu.","err");$id("cloudGroupName").focus();return;}
+    if(!code||code.length<4){status("Buat kode akses kelompok minimal 4 karakter.","err");$id("cloudGroupCode").focus();return;}
+    if(!apiReady()){status("URL Web App belum diatur. Buka bagian konfigurasi di awal skrip HTML dan tempel URL Apps Script berakhiran /exec.","err");return;}
+    const payload={action:"save",groupName,code,report:reportPayload()};
+    status("Mengirim laporan kelompok ke penyimpanan bersama...");
+    try{
+      // no-cors digunakan agar request lintas domain dapat dikirim dari halaman HTML/GitHub Pages.
+      await fetch(LAB_KALOR_API_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});
+      status("Permintaan simpan telah dikirim. Memuat ulang galeri untuk memeriksa laporan...", "");
+      setTimeout(loadGallery,1800);
+    }catch(err){status("Gagal mengirim laporan: "+err.message+". Periksa koneksi dan deployment Apps Script.","err");}
+  }
+  document.addEventListener("DOMContentLoaded",()=>{
+    $id("saveCloud")?.addEventListener("click",saveReport);
+    $id("refreshCloud")?.addEventListener("click",loadGallery);
+    $id("gallerySearch")?.addEventListener("input",renderGallery);
+    $id("galleryFilter")?.addEventListener("change",renderGallery);
+    $id("cloudGroupName")?.addEventListener("change",()=>{if($id("groupName")&&!$id("groupName").value)$id("groupName").value=val("cloudGroupName");});
+    if(apiReady())loadGallery();
+  });
+})();
+</script>
+
+</body></html>
